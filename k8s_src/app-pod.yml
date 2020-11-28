@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-app
+  labels:
+    name: web-app
+    env: dev
+    tier: two
+spec:
+  # Registry creds for private repository.
+  imagePullSecrets:
+    - name: regcred
+  containers:
+    - name: web-app
+      image: sunilmamillapalli/k8s-learning:latest
+      ports:
+        - name: http
+          containerPort: 5000
+      resources:
+        requests:
+          memory: "64Mi"
+          # spec.containers[].resources.requests.cpu of 0.5 is guaranteed half as much CPU as one that asks 
+          # for 1 CPU. The expression 0.1 is equivalent to the expression 100m, which can be read as 
+          # "one hundred millicpu"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"

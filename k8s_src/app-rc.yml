@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: app-rc
+  labels:
+    # labels for rc, not for pod(not linked to service)
+    # service is up even without this
+    env: dev-2
+    tier: two
+    name: app-rc
+spec:
+  replicas: 2
+  template:
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: web-app
+          image: sunilmamillapalli/k8s-learning:latest
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m" 
+    metadata:
+      name: web-app
+      # used by service as AND matching.
+      labels:
+        name: web-app
+        tier: two
+        env: dev
+

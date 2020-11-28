@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-svc
+  labels:
+    tier: two
+    env: dev
+    name: app-svc
+spec:
+  type: NodePort
+  ports:
+    - name: web-app-port
+      # pod port
+      targetPort: 5000
+      # within the cluster
+      port: 80
+      #  if left empty, kuberenetes picks node port
+      nodePort: 31101
+      protocol: TCP
+  selector:
+    tier: two
+    env: dev
+    name: web-app
